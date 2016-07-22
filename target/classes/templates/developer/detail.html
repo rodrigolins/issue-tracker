@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  layout:decorator="base/base">
+	<head>
+		<title>Developer detail</title>
+	</head>
+	<body>
+		<div layout:fragment="body">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1 class="pull-left">Developer detail</h1>
+						<div class="pull-left btn-menu-group">
+							<a th:href="@{/tracker/developer/{id}/update(id=${developer.id})}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Update</a>
+							<a th:href="@{/tracker/developer/{id}/delete(id=${developer.id})}" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
+						</div>
+					</div>
+				</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label th:for="id" class="col-sm-4 control-label">ID:</label>
+						<div class="col-sm-4">
+							<input th:type="text" class="form-control" th:field="${developer.id}" th:disabled="disabled" />
+						</div>
+						<div class="col-sm-4 hidden-xs"></div>
+					</div>
+					<div class="form-group">
+						<label th:for="name" class="col-sm-4 control-label">Name:</label>
+						<div class="col-sm-4">
+							<input class="form-control" type="text" th:field="${developer.name}" th:disabled="disabled" />
+						</div>
+						<div class="col-sm-4 hidden-xs"></div>
+					</div>
+				</div>
+				<div class="row">
+                    <div class="col-xs-12">
+                        <hr />
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="btn-group btn-property-group">
+							<a href="#" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New issue</a>
+						</div>
+					</div>
+				</div>
+                <!-- ISSUES -->
+                <!-- 
+				<div class="row" th:if="${sensor.properties.isEmpty()}">
+					<div class="col-xs-12">
+						<p>There are no properties for this sensor.</p>
+					</div>
+				</div>
+				<div class="row" th:if="${!sensor.properties.isEmpty()}">
+					<div class="col-xs-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">Properties</div>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Type</th>
+										<th>Value</th>
+										<th>Unit</th>
+										<th>Boundary</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="property : ${sensor.properties}" class="clickable-row" th:attr="data-href=@{/sensor/{id}/property/{propertyid}(id=${sensor.id},propertyid=${property.id})}">
+										<td th:text="${property.id}"></td>
+										<td th:text="${property.propertyType.name}"></td>
+										<td th:text="${property.value}"></td>
+										<td th:text="${property.unit}"></td>
+										<td th:text="${property.boundary.name}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				 -->
+
+                <!-- Rules 
+                <div class="row" th:if="${sensor.rules.isEmpty()}">
+                    <div class="col-xs-12">
+                        <p>There are no rules for this sensor.</p>
+                    </div>
+                </div>
+                <div class="row" th:if="${!sensor.rules.isEmpty()}">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Rules</div>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Unit</th>
+                                    <th>Time</th>
+                                    <th>Boundary</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="rule : ${sensor.rules}" class="clickable-row" th:attr="data-href=@{/sensor/{id}/rule/{ruleid}(id=${sensor.id}, ruleid=${rule.id})}">
+                                    <td th:text="${rule.id}"></td>
+                                    <td th:text="${rule.propertyType.name}"></td>
+                                    <td th:text="${rule.value}"></td>
+                                    <td th:text="${rule.unit}"></td>
+                                    <td th:text="${rule.time}"></td>
+                                    <td th:text="${rule.boundary.name}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> -->
+			</div> 
+		</div> 
+		<!--
+		Failed URL: ${url}
+		Exception:  ${exception.message}
+			<c:forEach items="${exception.stackTrace}" var="ste">    ${ste}
+		</c:forEach>
+		-->
+	</body>
+</html>

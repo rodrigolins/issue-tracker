@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  layout:decorator="base/base">
+	<head>
+		<title>Issue list</title>
+	</head>
+	<body>
+		<div layout:fragment="body">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1 class="pull-left">Issue list</h1>
+						<div class="pull-left btn-menu-group">
+						  <a th:href="@{/tracker/issue/new}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Issue</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel-heading">Stories</div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="story : ${stories}" class="clickable-row" th:attr="data-href=@{/tracker/issue/{id}(id=${story.id})}">
+                            <td th:text="${story.id}"></td>
+                            <td th:text="${story.title}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="panel-heading">Bugs</div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="bug : ${bugs}" class="clickable-row" th:attr="data-href=@{/tracker/issue/{id}(id=${bug.id})}">
+                            <td th:text="${bug.id}"></td>
+                            <td th:text="${bug.title}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</body>
+</html>

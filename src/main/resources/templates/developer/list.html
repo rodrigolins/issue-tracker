@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  layout:decorator="base/base">
+	<head>
+		<title>Sensor list</title>
+	</head>
+	<body>
+		<div layout:fragment="body">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1 class="pull-left">Developer list</h1>
+						<div class="pull-left btn-menu-group">
+						  <a th:href="@{/tracker/developer/new}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Developer</a>
+						</div>
+					</div>
+				</div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="developer : ${developers}" class="clickable-row" th:attr="data-href=@{/tracker/developer/{id}(id=${developer.id})}">
+                            <td th:text="${developer.id}"></td>
+                            <td th:text="${developer.name}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</body>
+</html>
