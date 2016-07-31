@@ -6,40 +6,55 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class WeekSchedule {
 	
-	@Column(name = "WEEK_INITIAL_DAY")
 	@JsonFormat(pattern = "dd.MM.yyyy")
 	private Calendar initialDate;
 	
-	@Column(name = "WEEK_FINAL_DAY")
 	@JsonFormat(pattern = "dd.MM.yyyy")
 	private Calendar finalDate;
 	
-	private Map<Developer, List<Story>> plan;
+	private Map<Developer, List<Story>> week;
 	
-	public WeekSchedule() {
-		plan = new Hashtable<Developer, List<Story>>();
+	/**
+	 * This class creates a proposed weekly work plan for a {@link Developer}.
+	 * 
+	 * The first work day is always a Monday and the last a Friday.
+	 * The first Monday is from the current week.
+	 * 
+	 * This constructor accepts a Integer that is the week to be created.
+	 * 0 means the current week. 1 represents the next week and so on.
+	 * 
+	 * @param weeksFromToday represent the week that should be created.
+	 */
+	public WeekSchedule(Integer weeksFromToday) {
+		week = new Hashtable<Developer, List<Story>>();
+		Calendar date = Calendar.getInstance();
+		
+		date.add(Calendar.DATE, (7 * weeksFromToday));
+		date.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		this.initialDate = (Calendar) date.clone();
+		
+		date.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+		this.finalDate = (Calendar) date.clone();
 	}
 
 	public Calendar getInitialDate() {
 		return initialDate;
 	}
 
-	public void setInitialDate(Calendar initialDate) {
-		this.initialDate = initialDate;
-	}
-
 	public Calendar getFinalDate() {
 		return finalDate;
 	}
-
-	public void setFinalDate(Calendar finalDate) {
-		this.finalDate = finalDate;
+	
+	public Map<Developer, List<Story>> getWeek() {
+		return week;
+	}
+	
+	public List<Story> getStoriesFromDeveloper(Developer developer) {
+		return week.get(developer);
 	}
 	
 	/**
@@ -48,30 +63,16 @@ public class WeekSchedule {
 	 * 
 	 * @param developer
 	 * @param story
-	 * @return true is the story is added successfully and false if not
 	 */
-	public boolean addDeveloperStories(Developer developer, Story story) {
-		List<Story> stories = plan.get(developer);
+	public void addStoryToDeveloper(Developer developer, Story story) {
+		List<Story> stories = week.get(developer);
 		if(stories == null) {
 			stories = new ArrayList<Story>();
 			stories.add(story);
-			plan.put(developer, stories);
-			return true;
+			week.put(developer, stories);
+		} else {
+			stories.add(story);
+			week.put(developer, stories);
 		}
-		Integer totalEspecification = 0;
-		for(Story aStory : stories) {
-			totalEspecification += aStory.getEstimation();
-		}
-		
-//		if(totalEspecification >=)
-		
-		return false;
-		
 	}
-	
-	
-	
-//	private List<Developer> developers;
-	
-
 }

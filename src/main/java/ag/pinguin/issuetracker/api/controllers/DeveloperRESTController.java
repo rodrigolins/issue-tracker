@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ag.pinguin.issuetracker.api.exceptions.ResourceNotFoundException;
 import ag.pinguin.issuetracker.business.entities.Developer;
 import ag.pinguin.issuetracker.business.repositories.DeveloperRepository;
 
@@ -33,7 +34,7 @@ public class DeveloperRESTController {
 	DeveloperRepository developerRepository;
 
 	/**
-	 * This method is responsible to retrieve all developers via GET.
+	 * This method is responsible to retrieve all developers via GET method.
 	 *
 	 * @return all developers
 	 */
@@ -60,9 +61,10 @@ public class DeveloperRESTController {
 	}
 	
 	/**
-	 * If more than one {@link Developer} is 
+	 * If one try to update more than one {@link Developer} a BAD_REQUEST
+	 * response is provided.
 	 *
-	 * @return the response entity
+	 * @return BAD_REQUEST
 	 */
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateDevelopers() {
@@ -70,9 +72,9 @@ public class DeveloperRESTController {
 	}
 	
 	/**
-	 * Delete developers.
+	 * If one try to update more than one {@link Developer} at the 
 	 *
-	 * @return the response entity
+	 * @return BAD_REQUEST
 	 */
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteDevelopers() {
@@ -89,7 +91,7 @@ public class DeveloperRESTController {
 	public ResponseEntity<Developer> retrieveDevelopers(@PathVariable Long id) {
 		Developer developer = developerRepository.findOne(id);
 		if(developer == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+			throw new ResourceNotFoundException("Developer not found");
 		}
 		return ResponseEntity.ok(developer);
 	}

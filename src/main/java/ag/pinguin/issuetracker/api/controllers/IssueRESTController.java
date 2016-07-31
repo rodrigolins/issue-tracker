@@ -42,6 +42,36 @@ public class IssueRESTController {
 		return ResponseEntity.ok(storyRepository.findAll());
 	}
 	
+	/**
+	 * Retrieve all bugs.
+	 *
+	 * @param id the id
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/bugs/{id:[\\d]+}", method = RequestMethod.GET)
+	public ResponseEntity<Bug> retrieveBugs(@PathVariable Long id) {
+		Bug bug = bugRepository.findOne(id);
+		if(bug == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(bug);
+	}
+	
+	/**
+	 * Retrieve all stories.
+	 *
+	 * @param id the id
+	 * @return the response entity
+	 */
+	@RequestMapping(value = "/stories/{id:[\\d]+}", method = RequestMethod.GET)
+	public ResponseEntity<Story> retrieveStories(@PathVariable Long id) {
+		Story story = storyRepository.findOne(id);
+		if(story == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		return ResponseEntity.ok(story);
+	}
+	
 	@RequestMapping(value = "/bugs", method = RequestMethod.POST)
 	public ResponseEntity<Bug> createBugs(@Validated @RequestBody Bug bug) {
 		if(bug == null) {
@@ -56,6 +86,7 @@ public class IssueRESTController {
 		if(story == null) {
 			ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
+		System.out.println(story);
 		storyRepository.save(story);
 		return ResponseEntity.status(HttpStatus.CREATED).body(story);
 	}
