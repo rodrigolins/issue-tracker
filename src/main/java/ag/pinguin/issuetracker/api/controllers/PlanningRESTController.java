@@ -11,47 +11,59 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ag.pinguin.issuetracker.business.entities.Developer;
 import ag.pinguin.issuetracker.business.entities.Story;
-import ag.pinguin.issuetracker.business.entities.WeekSchedule;
+import ag.pinguin.issuetracker.business.entities.WeekScheduleResult;
 import ag.pinguin.issuetracker.business.repositories.DeveloperRepository;
 import ag.pinguin.issuetracker.business.repositories.StoryRepository;
 
+/**
+ * This class is a Spring REST Controller. This class is in charge
+ * to calculate the weekly plan. 
+ *
+ * @author Rodrigo Lins de Oliveira
+ * @version 0.1
+ * Date: 18.07.2016
+ * @see RestController
+ */
 @RestController
 @RequestMapping("/api/v1/planning")
 public class PlanningRESTController {
 	
+	/** The story repository. */
 	@Autowired
 	private StoryRepository storyRepository;
 	
+	/** The developer repository. */
 	@Autowired
 	private DeveloperRepository developerRepository;
 	
+	/**
+	 * Make the weekly plan.
+	 *
+	 * @return the weekly plan
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<List<WeekSchedule>>  makePlan() {
-		
+	public ResponseEntity<List<WeekScheduleResult>>  makePlan() {
 		Iterable<Developer> developers = developerRepository.findAll();
 		Long developerCount = developerRepository.count();
 		
 		List<Story> storyList = storyRepository.getNotAssignedStories();
 		
-		List<WeekSchedule> plan = new ArrayList<WeekSchedule>();
-//		List<Map<Developer, List<Story>>> plan = new ArrayList<Map<Developer,List<Story>>>();
+		List<WeekScheduleResult> plan = new ArrayList<WeekScheduleResult>();
 		
-		WeekSchedule currentWeek = null;
-//		Map<Developer, List<Story>> week = null;
+		WeekScheduleResult currentWeek = null;
 		int weeksFromToday = 0;
 		
 		while(!storyList.isEmpty()) {
 			if(currentWeek == null) {
-				System.out.println("New week");
-				currentWeek = new WeekSchedule(weeksFromToday);
+				currentWeek = new WeekScheduleResult(weeksFromToday);
 				weeksFromToday++;
 			}
 			for(Developer d : developers) {
-				System.out.println("StoryList counter: " + storyList.size());
 				if(storyList.isEmpty()){
 					plan.add(currentWeek);
 					break;
 				}
+				
 				List<Story> developerStories = currentWeek.getStoriesFromDeveloper(d);
 				if(developerStories == null) {
 					developerStories = new ArrayList<Story>();
@@ -67,20 +79,16 @@ public class PlanningRESTController {
 						highest = s; 
 					}
 				}
-				System.out.println("highest: " + highest);
 				int estimationDeveloperCount = 0;
 				for(Story developerStory : developerStories) {
 					estimationDeveloperCount += developerStory.getEstimation();
 				}
 				if((estimationDeveloperCount + highest.getEstimation()) <= 10) {
-//					developerStories.add(highest);
 					currentWeek.addStoryToDeveloper(d, highest);
 					storyList.remove(highest);
 				} else {
 					developerCount--;
-					System.out.println(developerCount);
 					if(developerCount == 0L) {
-						System.out.println("StoryList size: " + storyList.size());
 						developerCount = developerRepository.count();
 						plan.add(currentWeek);
 						currentWeek = null;
@@ -89,54 +97,6 @@ public class PlanningRESTController {
 				}
 			}
 		}
-//		while(!storyList.isEmpty()) {
-//			if(week == null) {
-//				System.out.println("New week");
-//				week = new Hashtable<Developer, List<Story>>();
-//			}
-//			for(Developer d : developers) {
-//				System.out.println("StoryList counter: " + storyList.size());
-//				if(storyList.isEmpty()){
-//					plan.add(week);
-//					break;
-//				}
-//				List<Story> developerStories = week.get(d);
-//				if(developerStories == null) {
-//					developerStories = new ArrayList<Story>();
-//				}
-//				Story highest = null;
-//				for(Story s: storyList) {
-//					if(highest == null) {
-//						highest = s;
-//						continue;
-//					}
-//					int aux = s.getEstimation();
-//					if(aux > highest.getEstimation()) {
-//						highest = s; 
-//					}
-//				}
-//				System.out.println("highest: " + highest);
-//				int estimationDeveloperCount = 0;
-//				for(Story developerStory : developerStories) {
-//					estimationDeveloperCount += developerStory.getEstimation();
-//				}
-//				if((estimationDeveloperCount + highest.getEstimation()) <= 10) {
-//					developerStories.add(highest);
-//					week.put(d, developerStories);
-//					storyList.remove(highest);
-//				} else {
-//					developerCount--;
-//					System.out.println(developerCount);
-//					if(developerCount == 0L) {
-//						System.out.println("StoryList size: " + storyList.size());
-//						developerCount = developerRepository.count();
-//						plan.add(week);
-//						week = null;
-//						break;
-//					}
-//				}
-//			}
-//		}
 		return ResponseEntity.ok().body(plan);
 	}
 

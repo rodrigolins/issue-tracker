@@ -58,8 +58,11 @@ public class DeveloperController {
 			model.addAttribute("errorMessage", "Fail to update developer");
 			return "developer/update";
 		}
-		redirectAttributes.addFlashAttribute("successMessage", "Developer created successfully");
-		developerRepository.save(developer);
+		redirectAttributes.addFlashAttribute("successMessage", "Developer updated successfully");
+		System.out.println(developer);
+		Developer aDeveloper = developerRepository.findOne(developer.getDeveloperId());
+		aDeveloper.setName(developer.getName());
+		developerRepository.save(aDeveloper);
 		return "redirect:/tracker/developer/" + id.toString();
 	}
 	

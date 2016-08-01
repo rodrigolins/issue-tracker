@@ -14,7 +14,7 @@
                     </div>
 				</div>
 
-				<form action="#" class="form-horizontal" th:action="@{/tracker/developer/{id}/update(id=${developer.id})}" th:object="${developer}" method="post">
+				<form action="#" class="form-horizontal" th:action="@{/tracker/developer/{id}/update(id=${developer.developerId})}" th:object="${developer}" method="post">
                     <div th:class="${#fields.hasErrors('name')} ? 'form-group has-error' : form-group">
                         <label th:for="developer" class="col-sm-4 control-label">Name:</label>
                         <div class="col-sm-4">
@@ -26,15 +26,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-4 col-sm-4">
                             <button type="submit" class="btn btn-default">Save
-                                <!-- <input type="hidden" th:field="${sensor.id}" />
-                                <div th:each="property,propertyStat: *{properties}">
-                                    <input type="hidden" name="id" th:field="*{properties[__${propertyStat.index}__].id}" th:id="${'id-'+propertyStat.index}" />
-                                    <input type="hidden" name="propertyType.id" th:field="*{properties[__${propertyStat.index}__].propertyType.id}" th:id="${'propertyType.id-'+propertyStat.index}" />
-                                    <input type="hidden" name="propertyType.name" th:field="*{properties[__${propertyStat.index}__].propertyType.name}" th:id="${'propertyType.name-'+propertyStat.index}" />
-                                    <input type="hidden" name="value" th:field="*{properties[__${propertyStat.index}__].value}" th:id="${'value-'+propertyStat.index}" />
-                                    <input type="hidden" name="unit" th:field="*{properties[__${propertyStat.index}__].unit}" th:id="${'unit-'+propertyStat.index}" />
-                                    <input type="hidden" name="boundary" th:field="*{properties[__${propertyStat.index}__].boundary}" th:id="${'boundary-'+propertyStat.index}" />
-                                </div> -->
+                                 <input type="hidden" th:field="${developer.developerId}" />
                             </button>
                         </div>
                         <div class="col-sm-4 hidden-xs"></div>

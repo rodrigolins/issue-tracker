@@ -164,6 +164,58 @@ public abstract class Issue extends ResourceSupport {
 		this.developer = developer;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((creationDate == null) ? 0 : creationDate.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((developer == null) ? 0 : developer.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Issue other = (Issue) obj;
+		if (creationDate == null) {
+			if (other.creationDate != null)
+				return false;
+		} else if (!creationDate.equals(other.creationDate))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (developer == null) {
+			if (other.developer != null)
+				return false;
+		} else if (!developer.equals(other.developer))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
 	/**
 	 *  The {@link String} representation of the {@link Issue}.
 	 * 
@@ -171,7 +223,7 @@ public abstract class Issue extends ResourceSupport {
 	 */
 	@Override
 	public String toString() {
-		return "Issue [id=" + id + ", title=" + title + ", description="
+		return "Issue [id=" + getIssueId() + ", title=" + title + ", description="
 				+ description + ", creationDate=" + creationDate
 				+ ", developer=" + developer + "]";
 	}

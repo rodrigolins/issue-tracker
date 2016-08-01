@@ -88,6 +88,35 @@ public class Story extends Issue {
 		this.status = status;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((estimation == null) ? 0 : estimation.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Story other = (Story) obj;
+		if (estimation == null) {
+			if (other.estimation != null)
+				return false;
+		} else if (!estimation.equals(other.estimation))
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
+	}
+
 	/**
 	 * The {@link String} representation of the {@link Story}.
 	 * 
@@ -96,7 +125,7 @@ public class Story extends Issue {
 	@Override
 	public String toString() {
 		return "Story [estimation=" + estimation + ", status=" + status
-				+ ", id=" + getId() + ", title=" + getTitle()
+				+ ", id=" + getIssueId() + ", title=" + getTitle()
 				+ ", description=" + getDescription()
 				+ ", creationDate=" + getCreationDate()
 				+ ", developer=" + getDeveloper() + "]";

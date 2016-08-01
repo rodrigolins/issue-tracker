@@ -88,6 +88,32 @@ public class Bug extends Issue {
 		this.priority = priority;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((priority == null) ? 0 : priority.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bug other = (Bug) obj;
+		if (priority != other.priority)
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
+	}
+
 	/**
 	 * The {@link String} representation of a {@link Bug}.
 	 * @see ag.pinguin.issuetracker.business.entities.Issue#toString()
@@ -95,7 +121,7 @@ public class Bug extends Issue {
 	@Override
 	public String toString() {
 		return "Bug [status=" + status + ", priority=" + priority
-				+ ", id=" + getId() + ", title=" + getTitle()
+				+ ", id=" + getIssueId() + ", title=" + getTitle()
 				+ ", description=" + getDescription()
 				+ ", creationDate=" + getCreationDate()
 				+ ", developer=" + getDeveloper() + "]";

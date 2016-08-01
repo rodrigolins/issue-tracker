@@ -18,11 +18,11 @@
                             <div class="row">
                                 <hr/>
                             </div>
-                            <form action="#" class="form-horizontal" th:action="@{/tracker/developer/{id}/delete(id=${developer.id})}" th:object="${developer}" method="post">
+                            <form action="#" class="form-horizontal" th:action="@{/tracker/developer/{id}/delete(id=${developer.developerId})}" th:object="${developer}" method="post">
                                 <div class="form-group">
                                     <div class="col-sm-8">
                                         <button type="submit" class="btn btn-danger">Delete</button>
-                                        <a th:href="@{/tracker/developer/{id}(id=${developer.id})}" class="btn btn-default">Cancel</a>
+                                        <a th:href="@{/tracker/developer/{id}(id=${developer.developerId})}" class="btn btn-default">Cancel</a>
                                     </div>
                                     <div class="col-sm-4 hidden-xs"></div>
                                 </div>

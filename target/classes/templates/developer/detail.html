@@ -12,8 +12,8 @@
 					<div class="col-xs-12">
 						<h1 class="pull-left">Developer detail</h1>
 						<div class="pull-left btn-menu-group">
-							<a th:href="@{/tracker/developer/{id}/update(id=${developer.id})}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Update</a>
-							<a th:href="@{/tracker/developer/{id}/delete(id=${developer.id})}" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
+							<a th:href="@{/tracker/developer/{id}/update(id=${developer.developerId})}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Update</a>
+							<a th:href="@{/tracker/developer/{id}/delete(id=${developer.developerId})}" class="btn btn-danger" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a>
 						</div>
 					</div>
 				</div>
@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label th:for="id" class="col-sm-4 control-label">ID:</label>
 						<div class="col-sm-4">
-							<input th:type="text" class="form-control" th:field="${developer.id}" th:disabled="disabled" />
+							<input th:type="text" class="form-control" th:field="${developer.developerId}" th:disabled="disabled" />
 						</div>
 						<div class="col-sm-4 hidden-xs"></div>
 					</div>

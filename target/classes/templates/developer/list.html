@@ -24,8 +24,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="developer : ${developers}" class="clickable-row" th:attr="data-href=@{/tracker/developer/{id}(id=${developer.id})}">
-                            <td th:text="${developer.id}"></td>
+                        <tr th:each="developer : ${developers}" class="clickable-row" th:attr="data-href=@{/tracker/developer/{id}(id=${developer.developerId})}">
+                            <td th:text="${developer.developerId}"></td>
                             <td th:text="${developer.name}"></td>
                         </tr>
                     </tbody>

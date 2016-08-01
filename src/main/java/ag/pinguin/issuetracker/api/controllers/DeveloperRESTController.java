@@ -1,5 +1,7 @@
 package ag.pinguin.issuetracker.api.controllers;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ag.pinguin.issuetracker.api.exceptions.MethodNotAllowed;
 import ag.pinguin.issuetracker.api.exceptions.ResourceNotFoundException;
 import ag.pinguin.issuetracker.business.entities.Developer;
 import ag.pinguin.issuetracker.business.repositories.DeveloperRepository;
@@ -41,6 +44,9 @@ public class DeveloperRESTController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<Developer>> retrieveDevelopers() {
 		Iterable<Developer> developers = developerRepository.findAll();
+		for(Developer developer : developers) {
+			developer.add(linkTo(methodOn(DeveloperRESTController.class).retrieveDevelopers(developer.getDeveloperId())).withSelfRel());
+		}
 		return ResponseEntity.ok(developers);
 	}
 	
@@ -54,9 +60,10 @@ public class DeveloperRESTController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ResponseEntity<Developer> createDevelopers(@Valid @RequestBody Developer developer) {
 		if(developer.getName() == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			throw new ResourceNotFoundException("The developer name should not be null");
 		}
 		developerRepository.save(developer);
+		developer.add(linkTo(methodOn(DeveloperRESTController.class).retrieveDevelopers(developer.getDeveloperId())).withSelfRel());
 		return ResponseEntity.status(HttpStatus.CREATED).body(developer);
 	}
 	
@@ -68,17 +75,18 @@ public class DeveloperRESTController {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateDevelopers() {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		throw new MethodNotAllowed("It is not allowed to update more than one developer at the same time");
 	}
 	
 	/**
-	 * If one try to update more than one {@link Developer} at the 
+	 * If one try to update more than one {@link Developer} the response is
+	 * a BAD_REQUEST. 
 	 *
 	 * @return BAD_REQUEST
 	 */
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteDevelopers() {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		throw new MethodNotAllowed("It is not allowed to delete more than one developer at the same time");
 	}
 	
 	/**
@@ -93,6 +101,7 @@ public class DeveloperRESTController {
 		if(developer == null) {
 			throw new ResourceNotFoundException("Developer not found");
 		}
+		developer.add(linkTo(methodOn(DeveloperRESTController.class).retrieveDevelopers(id)).withSelfRel());
 		return ResponseEntity.ok(developer);
 	}
 	
@@ -115,14 +124,15 @@ public class DeveloperRESTController {
 	@RequestMapping(value = "/{id:[\\d]+}", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateDevelopers(@Valid @RequestBody Developer developer) {
 		if(developer == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			throw new ResourceNotFoundException("Developer not found");
 		}
 		developerRepository.save(developer);
+		developer.add(linkTo(methodOn(DeveloperRESTController.class).retrieveDevelopers(developer.getDeveloperId())).withSelfRel());
 		return ResponseEntity.ok().body(null);
 	}
 	
 	/**
-	 * Delete developers.
+	 * Delete a developer.
 	 *
 	 * @param id the id
 	 * @return the response entity
@@ -130,12 +140,12 @@ public class DeveloperRESTController {
 	@RequestMapping(value = "/{id:[\\d]+}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteDevelopers(@PathVariable Long id) {
 		if(id == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			throw new ResourceNotFoundException("Developer not found");
 		}
 		
 		Developer developer = developerRepository.findOne(id);
 		if(developer == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			throw new ResourceNotFoundException("Developer not found");
 		}
 		developerRepository.delete(developer);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
